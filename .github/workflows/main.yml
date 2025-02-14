@@ -1,0 +1,2 @@
+bun install code-review-gpt
+bun code-review-gpt configure
