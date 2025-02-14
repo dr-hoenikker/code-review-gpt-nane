@@ -1,10 +1,12 @@
+import chalk from 'chalk';
 import type { MemoryVectorStore } from 'langchain/vectorstores/memory';
-import c from 'picocolors';
 
 import { logger } from '../../common/utils/logger';
 import { askAI } from '../../review/llm/askAI';
 import { constructPromptsArray } from '../../review/prompt/constructPrompt/constructPrompt';
 import type { TestCase } from '../types';
+import type { AIModelName } from '../../review/constants';
+import type { ReviewType } from '../../common/types';
 import {
   generateTestReport,
   generateTestResultsSummary,
@@ -25,10 +27,10 @@ import {
 const runTest = async (
   openAIApiKey: string,
   testCase: TestCase,
-  modelName: string,
+  modelName: AIModelName,
   maxPromptLength: number,
   vectorStore: MemoryVectorStore,
-  reviewType: string,
+  reviewType: ReviewType,
   reviewLanguage?: string
   // eslint-disable-next-line max-params
 ): Promise<testResult> => {
@@ -36,7 +38,7 @@ const runTest = async (
     throw new Error(`Test case ${testCase.name} does not have a snippet.`);
   }
 
-  logger.info(c.blue(`Running test case ${testCase.name}...`));
+  logger.info(chalk.blue(`Running test case ${testCase.name}...`));
 
   // First step: run the review on the code snippet.
   const prompts = constructPromptsArray(
@@ -88,10 +90,10 @@ const runTest = async (
 export const runTests = async (
   openAIApiKey: string,
   testCases: TestCase[],
-  modelName: string,
+  modelName: AIModelName,
   maxPromptLength: number,
   vectorStore: MemoryVectorStore,
-  reviewType: string,
+  reviewType: ReviewType,
   reviewLanguage?: string
   // eslint-disable-next-line max-params
 ): Promise<string> => {

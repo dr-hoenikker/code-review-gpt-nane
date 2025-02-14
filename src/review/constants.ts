@@ -1,6 +1,8 @@
 export const signOff =
   '#### Powered by [Code Review GPT](https://github.com/mattzcarey/code-review-gpt)';
 
+export type AIModelName = (typeof modelInfo)[number]['model'];
+
 export const modelInfo = [
   {
     model: 'gpt-4o-mini',
@@ -38,9 +40,15 @@ export const modelInfo = [
     model: 'deepseek-chat',
     maxPromptLength: 180000, //64k tokens
   },
-]; // Response needs about 1k tokens ~= 3k characters
+  {
+    model: 'deepseek-reasoner',
+    maxPromptLength: 180000, //64k tokens
+  },
+] as const; // Response needs about 1k tokens ~= 3k characters
 
-export const languageMap: { [key: string]: string } = {
+export const modelsNames = modelInfo.map((item) => item.model);
+
+export const languageMap = {
   '.js': 'JavaScript',
   '.ts': 'TypeScript',
   '.py': 'Python',
@@ -65,7 +73,7 @@ export const languageMap: { [key: string]: string } = {
   '.tf': 'Terraform',
   '.hcl': 'Terraform',
   '.swift': 'Swift',
-};
+} as const;
 
 export const supportedFiles = new Set(Object.keys(languageMap));
 
